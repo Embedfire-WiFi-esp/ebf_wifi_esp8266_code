@@ -180,6 +180,8 @@ void macESP8266_USART_INT_FUN ( void )
 		
 		ucCh = USART_ReceiveData( macESP8266_USARTx );                                                              //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)
 	
+		USART_SendData(macUSARTx,ucCh);    
+		
 		ucTcpClosedFlag = strstr ( strEsp8266_Fram_Record .Data_RX_BUF, "CLOSED\r\n" ) ? 1 : 0;
 		
   }	
@@ -191,7 +193,6 @@ void macESP8266_USART_INT_FUN ( void )
 void macUSART_INT_FUN(void)
 {
   uint8_t ucTemp;
-
 	if(USART_GetITStatus(macUSARTx,USART_IT_RXNE)!=RESET)
 	{		
 		ucTemp = USART_ReceiveData(macUSARTx);
@@ -199,6 +200,7 @@ void macUSART_INT_FUN(void)
 
 	}	 
 }
+
 /**
   * @brief  This function handles PPP interrupt request.
   * @param  None
