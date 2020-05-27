@@ -30,7 +30,7 @@
 #include "bsp_SysTick.h"
 #include "bsp_esp8266.h"
 #include "test.h"
-
+#include "bsp_usart.h"
 
 
 /** @addtogroup STM32F10x_StdPeriph_Template
@@ -153,6 +153,26 @@ void SysTick_Handler(void)
 /*  available peripheral interrupt handler's name please refer to the startup */
 /*  file (startup_stm32f10x_xx.s).                                            */
 /******************************************************************************/
+// 串口中断服务函数
+void DEBUG_USART_IRQHandler(void)
+{
+  uint8_t ucCh;
+	if ( USART_GetITStatus ( DEBUG_USARTx, USART_IT_RXNE ) != RESET )
+	{
+		ucCh  = USART_ReceiveData( DEBUG_USARTx );
+		
+		if ( strUSART_Fram_Record .InfBit .FramLength < ( RX_BUF_MAX_LEN - 1 ) )                       //预留1个字节写结束符
+			   strUSART_Fram_Record .Data_RX_BUF [ strUSART_Fram_Record .InfBit .FramLength ++ ]  = ucCh;
+
+	}
+	 	 
+	if ( USART_GetITStatus( DEBUG_USARTx, USART_IT_IDLE ) == SET )                                         //数据帧接收完毕
+	{
+    strUSART_Fram_Record .InfBit .FramFinishFlag = 1;		
+		
+		ucCh = USART_ReceiveData( DEBUG_USARTx );                                                              //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)	
+  }	
+}
 /**
   * @brief  This function handles macESP8266_USARTx Handler.
   * @param  None
@@ -167,7 +187,7 @@ void macESP8266_USART_INT_FUN ( void )
 		ucCh  = USART_ReceiveData( macESP8266_USARTx );
 		
 		if ( strEsp8266_Fram_Record .InfBit .FramLength < ( RX_BUF_MAX_LEN - 1 ) )                       //预留1个字节写结束符
-			strEsp8266_Fram_Record .Data_RX_BUF [ strEsp8266_Fram_Record .InfBit .FramLength ++ ]  = ucCh;
+			   strEsp8266_Fram_Record .Data_RX_BUF [ strEsp8266_Fram_Record .InfBit .FramLength ++ ]  = ucCh;
 
 	}
 	 	 

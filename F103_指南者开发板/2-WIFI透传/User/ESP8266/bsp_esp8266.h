@@ -67,7 +67,7 @@ extern struct  STRUCT_USARTx_Fram                                  //´®¿ÚÊý¾ÝÖ¡µ
 	
 } strEsp8266_Fram_Record;
 
-
+extern struct STRUCT_USARTx_Fram strUSART_Fram_Record;
 
 /******************************** ESP8266 Á¬½ÓÒý½Å¶¨Òå ***********************************/
 #define      macESP8266_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
