@@ -10,17 +10,14 @@
 
 #define LED_CMD_NUMBER   8
 char *ledCmd[8] = { "LED_RED","LED_GREEN","LED_BLUE","LED_YELLOW","LED_PURPLE","LED_CYAN","LED_WHITE","LED_RGBOFF" };
-                        
-                     
+                                          
+volatile uint8_t ucTcpClosedFlag = 0;
+
 /**
   * @brief  获取网络调试助手和串口调试助手发来的信息
   * @param  无
   * @retval 无
   */
-volatile uint8_t ucTcpClosedFlag = 0;
-
-char cStr [ 1500 ] = { 0 };
-
 void Get_ESP82666_Cmd( char * cmd)
 {
 	uint8_t i;
@@ -70,8 +67,6 @@ void ESP8266_StaTcpClient_UnvarnishTest ( void )
 {
 	uint8_t ucStatus;
 	uint16_t i;
-//	char cStr [ 100 ] = { 0 };
-	
 		
   printf ( "\r\n正在配置 ESP8266 ......\r\n" );
 
@@ -94,7 +89,6 @@ void ESP8266_StaTcpClient_UnvarnishTest ( void )
 	
 	while ( 1 )
 	{
-		
 		if(strUSART_Fram_Record .InfBit .FramFinishFlag == 1)  //如果接收到了串口调试助手的数据
 		{
 			
