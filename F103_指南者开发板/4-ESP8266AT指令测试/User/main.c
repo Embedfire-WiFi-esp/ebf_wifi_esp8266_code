@@ -29,9 +29,7 @@ int main(void)
 {	
   /*初始化USART 配置模式为 115200 8-N-1，中断接收*/
   USART_Config();
-	
 	ESP8266_Init();
-	/* 发送一个字符串 */
 	printf("欢迎使用野火STM32开发板\n\n");
 	printf("这是一个ESP8266AT指令测试实验\n\n");
 	printf("请使用串口调试助手发送\"AT+换行回车\"测试ESP8266是否准备好\n\n");
