@@ -10,12 +10,13 @@
       <TargetName>WF-ESP8266</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F103ZE</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F1xx_DFP.2.1.0</PackID>
+          <PackID>Keil.STM32F1xx_DFP.2.3.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IROM(0x08000000,0x80000) IRAM(0x20000000,0x10000) CPUTYPE("Cortex-M3") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -183,6 +184,7 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>0</RvdsVP>
+            <RvdsMve>0</RvdsMve>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -323,6 +325,7 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>0</uC99>
+            <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>0</v6Lang>
             <v6LangP>0</v6LangP>
@@ -335,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\CMSIS;..\..\User;..\..\Libraries\FWlib\inc;..\..\User\gpio;..\..\User\SysTick;..\..\User\usart;..\..\User\Common;..\..\User\ESP8266;..\..\User\Test;..\..\User\dht11</IncludePath>
+              <IncludePath>..\..\Libraries\CMSIS;..\..\User;..\..\Libraries\FWlib\inc;..\..\User\gpio;..\..\User\SysTick;..\..\User\usart;..\..\User\Common;..\..\User\ESP8266;..\..\User\Test;..\..\User\dht11;..\..\User\led</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -570,11 +573,6 @@
               <FilePath>..\..\User\stm32f10x_it.h</FilePath>
             </File>
             <File>
-              <FileName>bsp_usart1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\User\usart\bsp_usart1.c</FilePath>
-            </File>
-            <File>
               <FileName>bsp_gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\gpio\bsp_gpio.c</FilePath>
@@ -603,6 +601,16 @@
               <FileName>test.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\Test\test.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\led\bsp_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\usart\bsp_usart.c</FilePath>
             </File>
           </Files>
         </Group>
