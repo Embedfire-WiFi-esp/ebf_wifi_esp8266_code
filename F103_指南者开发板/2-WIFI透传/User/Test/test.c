@@ -18,7 +18,7 @@ volatile uint8_t ucTcpClosedFlag = 0;
   * @param  нч
   * @retval нч
   */
-void Get_ESP82666_Cmd( char * cmd)
+void Get_ESP82666_Cmd( char * cmd )
 {
 	uint8_t i;
 	for(i = 0;i < LED_CMD_NUMBER; i++)
