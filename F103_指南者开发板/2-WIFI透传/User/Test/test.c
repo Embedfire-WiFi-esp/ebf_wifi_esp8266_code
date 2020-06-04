@@ -5,14 +5,58 @@
 #include <string.h>  
 #include <stdbool.h>
 #include "bsp_dht11.h"
+#include "bsp_usart.h"
+#include "bsp_led.h" 
 
-
-
+#define LED_CMD_NUMBER   8
+char *ledCmd[8] = { "LED_RED","LED_GREEN","LED_BLUE","LED_YELLOW","LED_PURPLE","LED_CYAN","LED_WHITE","LED_RGBOFF" };
+                                          
 volatile uint8_t ucTcpClosedFlag = 0;
 
-char cStr [ 1500 ] = { 0 };
-
-
+/**
+  * @brief  获取网络调试助手和串口调试助手发来的信息
+  * @param  无
+  * @retval 无
+  */
+void Get_ESP82666_Cmd( char * cmd )
+{
+	uint8_t i;
+	for(i = 0;i < LED_CMD_NUMBER; i++)
+	{
+     if(( bool ) strstr ( cmd, ledCmd[i] ))
+		 break;
+	}
+	switch(i)
+    {
+      case 0:
+        LED_RED;
+      break;
+      case 1:
+        LED_GREEN;
+      break;
+      case 2:
+        LED_BLUE;
+      break;
+      case 3:
+        LED_YELLOW;
+      break;
+      case 4:
+        LED_PURPLE;
+      break;
+      case 5:
+        LED_CYAN;
+      break;
+      case 6:
+        LED_WHITE;
+      break;
+      case 7:
+        LED_RGBOFF;
+      break;
+      default:
+        
+        break;      
+    }   
+}
 
 /**
   * @brief  ESP8266 （Sta Tcp Client）透传
@@ -22,9 +66,7 @@ char cStr [ 1500 ] = { 0 };
 void ESP8266_StaTcpClient_UnvarnishTest ( void )
 {
 	uint8_t ucStatus;
-	
-	char cStr [ 100 ] = { 0 };
-	
+	uint16_t i;
 		
   printf ( "\r\n正在配置 ESP8266 ......\r\n" );
 
@@ -43,25 +85,34 @@ void ESP8266_StaTcpClient_UnvarnishTest ( void )
 	while ( ! ESP8266_UnvarnishSend () );
 	
 	printf ( "\r\n配置 ESP8266 完毕\r\n" );
-	
+	printf ( "\r\n开始透传......\r\n" );
 	
 	while ( 1 )
-	{		
-		sprintf ( cStr,
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n\
-ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n\
-ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n\
-ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n\
-ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n\
-ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n\
-ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n\
-ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n\
-ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n\
-ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n" );
-		
-		ESP8266_SendString ( ENABLE, cStr, 0, Single_ID_0 );               //发送数据
-		
-		Delay_ms ( 100 );
+	{
+		if(strUSART_Fram_Record .InfBit .FramFinishFlag == 1)  //如果接收到了串口调试助手的数据
+		{
+			
+			for(i = 0;i < strUSART_Fram_Record .InfBit .FramLength; i++)
+			{
+				 USART_SendData( macESP8266_USARTx ,strUSART_Fram_Record .Data_RX_BUF[i]); //转发给ESP82636
+				 while(USART_GetFlagStatus(macESP8266_USARTx,USART_FLAG_TC)==RESET){}      //等待发送完成
+			}
+			strUSART_Fram_Record .InfBit .FramLength = 0;                                //接收数据长度置零
+			strUSART_Fram_Record .InfBit .FramFinishFlag = 0;                            //接收标志置零
+			Get_ESP82666_Cmd(strUSART_Fram_Record .Data_RX_BUF);                         //检查一下是不是点灯命令
+	  }
+		if(strEsp8266_Fram_Record .InfBit .FramFinishFlag)                             //如果接收到了ESP8266的数据
+		{                                                      
+			for(i = 0;i < strEsp8266_Fram_Record .InfBit .FramLength; i++)               
+			{
+				 USART_SendData( DEBUG_USARTx ,strEsp8266_Fram_Record .Data_RX_BUF[i]);    //转发给ESP82636
+				 while(USART_GetFlagStatus(DEBUG_USARTx,USART_FLAG_TC)==RESET){}
+			}
+			 strEsp8266_Fram_Record .InfBit .FramLength = 0;                             //接收数据长度置零
+			 strEsp8266_Fram_Record.InfBit.FramFinishFlag = 0;                           //接收标志置零
+			 Get_ESP82666_Cmd(strEsp8266_Fram_Record .Data_RX_BUF);                      //检查一下是不是点灯命令
+		}
+	
 		
 		if ( ucTcpClosedFlag )                                             //检测是否失去连接
 		{
@@ -89,5 +140,6 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRSTUVWXYZ\r\nABCDEFGHIJKLMNOPQRST
 	
 		
 }
+
 
 
