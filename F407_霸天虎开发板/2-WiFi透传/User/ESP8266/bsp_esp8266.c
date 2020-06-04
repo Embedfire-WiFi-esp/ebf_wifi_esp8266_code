@@ -28,8 +28,8 @@ static void                   ESP8266_USART_Config                ( void );
 static void                   ESP8266_USART_NVIC_Configuration    ( void );
 
 
-
 struct  STRUCT_USARTx_Fram strEsp8266_Fram_Record = { 0 };
+struct  STRUCT_USARTx_Fram strUSART_Fram_Record = { 0 };
 
 
 
@@ -47,7 +47,7 @@ void ESP8266_Init ( void )
 	
 	macESP8266_RST_HIGH_LEVEL();
 
-	macESP8266_CH_DISABLE();
+	macESP8266_CH_ENABLE();
 	
 	
 }

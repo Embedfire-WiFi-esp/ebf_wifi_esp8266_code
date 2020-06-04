@@ -24,7 +24,8 @@
 #define DEBUG_USART_TX_SOURCE                   GPIO_PinSource9
 /************************************************************/
 
-
+#define  DEBUG_USART_IRQ                USART1_IRQn
+#define  DEBUG_USART_IRQHandler         USART1_IRQHandler
 //´®¿Ú²¨ÌØÂÊ
 #define DEBUG_USART_BAUDRATE                    115200
 
@@ -32,5 +33,5 @@
 
 void Debug_USART_Config(void);
 //int fputc(int ch, FILE *f);
-
+void Usart_SendString( USART_TypeDef * pUSARTx, char *str);
 #endif /* __USART1_H */

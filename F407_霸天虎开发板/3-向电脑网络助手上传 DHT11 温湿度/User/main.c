@@ -4,7 +4,7 @@
   * @author  fire
   * @version V1.0
   * @date    2015-xx-xx
-  * @brief   wifi 向电脑上传温湿度数据
+  * @brief   wifi 串口透传例程
   ******************************************************************************
   * @attention
   *
@@ -20,9 +20,9 @@
 #include "./systick/bsp_SysTick.h"
 #include "./DHT11/bsp_dht11.h"
 #include "./esp8266/bsp_esp8266.h"
-#include "./test/test.h"
-
-
+#include "test.h"
+#include "./led/bsp_led.h"
+#include "bsp_dht11.h"
 /**
   * @brief  主函数
   * @param  无
@@ -37,16 +37,14 @@ int main(void)
 	SysTick_Init();
 	
 	ESP8266_Init ();          //初始化WiFi模块使用的接口和外设
+	LED_GPIO_Config();        //初始化RGB彩灯
 	DHT11_GPIO_Config();
-	
-	printf ( "\r\n野火 WF-ESP8266 WiFi模块测试例程\r\n" );    //打印测试例程提示信息
-
-	
+	printf ( "\r\n野火 WF-ESP8266 WiFi模块测试例程\r\n" );                          //打印测试例程提示信息
   ESP8266_StaTcpClient_UnvarnishTest ();
 	
-	
-  while ( 1 );
-
+  while(1)
+	{	
+  }	
 
 }
 
