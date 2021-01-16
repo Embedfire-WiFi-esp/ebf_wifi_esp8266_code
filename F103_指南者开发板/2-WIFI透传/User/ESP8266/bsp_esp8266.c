@@ -24,16 +24,17 @@ struct  STRUCT_USARTx_Fram strUSART_Fram_Record = { 0 };
   */
 void ESP8266_Init ( void )
 {
+	/* 初始化ESP8266用到的GPIO引脚 */
 	ESP8266_GPIO_Config (); 
 	
+	/* 初始化ESP8266用到的 USART */
 	ESP8266_USART_Config (); 
 	
-	
+	/* 拉高ESP8266复位管脚 */
 	macESP8266_RST_HIGH_LEVEL();
 
+	/* 将CH_PD管脚置低 */
 	macESP8266_CH_DISABLE();
-	
-	
 }
 
 
@@ -51,11 +52,11 @@ static void ESP8266_GPIO_Config ( void )
 	/* 配置 CH_PD 引脚*/
 	macESP8266_CH_PD_APBxClock_FUN ( macESP8266_CH_PD_CLK, ENABLE ); 
 											   
-	GPIO_InitStructure.GPIO_Pin = macESP8266_CH_PD_PIN;	
+	GPIO_InitStructure.GPIO_Pin = macESP8266_CH_PD_PIN;	  // CH_PD
 
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;   
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;      // 推挽输出
    
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 		//GPIO时钟为50MHz
 
 	GPIO_Init ( macESP8266_CH_PD_PORT, & GPIO_InitStructure );	 
 
@@ -63,7 +64,7 @@ static void ESP8266_GPIO_Config ( void )
 	/* 配置 RST 引脚*/
 	macESP8266_RST_APBxClock_FUN ( macESP8266_RST_CLK, ENABLE ); 
 											   
-	GPIO_InitStructure.GPIO_Pin = macESP8266_RST_PIN;	
+	GPIO_InitStructure.GPIO_Pin = macESP8266_RST_PIN;	 		// RST
 
 	GPIO_Init ( macESP8266_RST_PORT, & GPIO_InitStructure );	 
 
@@ -83,41 +84,40 @@ static void ESP8266_USART_Config ( void )
 	
 	
 	/* config USART clock */
-	macESP8266_USART_APBxClock_FUN ( macESP8266_USART_CLK, ENABLE );
-	macESP8266_USART_GPIO_APBxClock_FUN ( macESP8266_USART_GPIO_CLK, ENABLE );
+	macESP8266_USART_APBxClock_FUN ( macESP8266_USART_CLK, ENABLE );  // 使能串口3时钟
+	macESP8266_USART_GPIO_APBxClock_FUN ( macESP8266_USART_GPIO_CLK, ENABLE ); // 使能串口3引脚时钟
 	
 	/* USART GPIO config */
 	/* Configure USART Tx as alternate function push-pull */
-	GPIO_InitStructure.GPIO_Pin =  macESP8266_USART_TX_PIN;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(macESP8266_USART_TX_PORT, &GPIO_InitStructure);  
+	GPIO_InitStructure.GPIO_Pin =  macESP8266_USART_TX_PIN;		// TX 引脚
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;						// 复用推挽输出
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;					// 引脚时钟定义为50MHz
+	GPIO_Init(macESP8266_USART_TX_PORT, &GPIO_InitStructure); // 初始化 TX 引脚配置
   
 	/* Configure USART Rx as input floating */
-	GPIO_InitStructure.GPIO_Pin = macESP8266_USART_RX_PIN;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_Init(macESP8266_USART_RX_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = macESP8266_USART_RX_PIN;		// RX 引脚
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;			// 浮空输入
+	GPIO_Init(macESP8266_USART_RX_PORT, &GPIO_InitStructure); // 初始化 RX 引脚配置	
 	
 	/* USART1 mode config */
-	USART_InitStructure.USART_BaudRate = macESP8266_USART_BAUD_RATE;
-	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-	USART_InitStructure.USART_StopBits = USART_StopBits_1;
-	USART_InitStructure.USART_Parity = USART_Parity_No ;
-	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-	USART_Init(macESP8266_USARTx, &USART_InitStructure);
+	USART_InitStructure.USART_BaudRate = macESP8266_USART_BAUD_RATE;	// 串口波特率 115200
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;				// 字长为8位数据格式
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;            // 一个停止位
+	USART_InitStructure.USART_Parity = USART_Parity_No ;              // 无奇偶校验位
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None; //无硬件数据流控制
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;   // 收发模式
+	USART_Init(macESP8266_USARTx, &USART_InitStructure); 							//初始化串口3
 	
 	
 	/* 中断配置 */
 	USART_ITConfig ( macESP8266_USARTx, USART_IT_RXNE, ENABLE ); //使能串口接收中断 
 	USART_ITConfig ( macESP8266_USARTx, USART_IT_IDLE, ENABLE ); //使能串口总线空闲中断 	
-
-	ESP8266_USART_NVIC_Configuration ();
+  
+	/* 配置 ESP8266 USART 的 NVIC 中断 */
+	ESP8266_USART_NVIC_Configuration ();    
 	
-	
+	/* 使能串口3*/
 	USART_Cmd(macESP8266_USARTx, ENABLE);
-	
-	
 }
 
 

@@ -70,18 +70,25 @@ void ESP8266_StaTcpClient_UnvarnishTest ( void )
 		
   printf ( "\r\n正在配置 ESP8266 ......\r\n" );
 
+	/* 拉高 CH_PD 引脚*/
 	macESP8266_CH_ENABLE();
 	
+	/* 对WF-ESP8266模块进行AT测试启动 */
 	ESP8266_AT_Test ();
 	
+	/* 选择WF-ESP8266模块的工作模式 */
 	ESP8266_Net_Mode_Choose ( STA );
 
+	/* WF-ESP8266模块连接外部WiFi */
   while ( ! ESP8266_JoinAP ( macUser_ESP8266_ApSsid, macUser_ESP8266_ApPwd ) );	
 	
+	/* WF-ESP8266模块启动多连接 */
 	ESP8266_Enable_MultipleId ( DISABLE );
 	
+	/* WF-ESP8266模块连接外部服务器 */
 	while ( !	ESP8266_Link_Server ( enumTCP, macUser_ESP8266_TcpServer_IP, macUser_ESP8266_TcpServer_Port, Single_ID_0 ) );
 	
+	/* 配置WF-ESP8266模块进入透传发送 */
 	while ( ! ESP8266_UnvarnishSend () );
 	
 	printf ( "\r\n配置 ESP8266 完毕\r\n" );
@@ -137,8 +144,6 @@ void ESP8266_StaTcpClient_UnvarnishTest ( void )
 			
 		}
 	}
-	
-		
 }
 
 

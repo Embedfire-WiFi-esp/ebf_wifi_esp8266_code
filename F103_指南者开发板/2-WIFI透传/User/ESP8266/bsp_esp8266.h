@@ -70,31 +70,31 @@ extern struct  STRUCT_USARTx_Fram                                  //´®¿ÚÊý¾ÝÖ¡µ
 extern struct STRUCT_USARTx_Fram strUSART_Fram_Record;
 
 /******************************** ESP8266 Á¬½ÓÒý½Å¶¨Òå ***********************************/
-#define      macESP8266_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
-#define      macESP8266_CH_PD_CLK                             RCC_APB2Periph_GPIOB  
-#define      macESP8266_CH_PD_PORT                            GPIOB
-#define      macESP8266_CH_PD_PIN                             GPIO_Pin_8
+#define      macESP8266_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd  /*ÖØ¶¨Òå¿ªÆôESP8266 CH_PD ¶Ë¿ÚµÄÊ±ÖÓº¯Êý*/
+#define      macESP8266_CH_PD_CLK                             RCC_APB2Periph_GPIOB   /* ¶¨ÒåESP8266 CH_PD Òý½Å¶Ë¿ÚÊ±ÖÓ */
+#define      macESP8266_CH_PD_PORT                            GPIOB                 /* ¶¨ÒåESP8266 CH_PD Òý½Å¶Ë¿Ú*/
+#define      macESP8266_CH_PD_PIN                             GPIO_Pin_8            /* ¶¨ÒåESP8266 CH_PD Òý½Å*/
 
-#define      macESP8266_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
-#define      macESP8266_RST_CLK                               RCC_APB2Periph_GPIOB
-#define      macESP8266_RST_PORT                              GPIOB
-#define      macESP8266_RST_PIN                               GPIO_Pin_9
+#define      macESP8266_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd/* ÖØ¶¨Òå¿ªÆôESP8266 RST ¶Ë¿ÚµÄÊ±ÖÓº¯Êý */
+#define      macESP8266_RST_CLK                               RCC_APB2Periph_GPIOB  /* ¶¨ÒåESP8266 RST Òý½Å¶Ë¿ÚÊ±ÖÓ */
+#define      macESP8266_RST_PORT                              GPIOB                 /* ¶¨ÒåESP8266 RST Òý½Å¶Ë¿Ú*/
+#define      macESP8266_RST_PIN                               GPIO_Pin_9            /* ¶¨ÒåESP8266 RST Òý½Å*/
 
  
 
-#define      macESP8266_USART_BAUD_RATE                       115200
+#define      macESP8266_USART_BAUD_RATE                       115200                /* ¶¨ÒåESP8266µÄ´®¿Ú²¨ÌØÂÊÎª 115200*/      
 
-#define      macESP8266_USARTx                                USART3
-#define      macESP8266_USART_APBxClock_FUN                   RCC_APB1PeriphClockCmd
-#define      macESP8266_USART_CLK                             RCC_APB1Periph_USART3
-#define      macESP8266_USART_GPIO_APBxClock_FUN              RCC_APB2PeriphClockCmd
-#define      macESP8266_USART_GPIO_CLK                        RCC_APB2Periph_GPIOB     
-#define      macESP8266_USART_TX_PORT                         GPIOB   
-#define      macESP8266_USART_TX_PIN                          GPIO_Pin_10
-#define      macESP8266_USART_RX_PORT                         GPIOB
-#define      macESP8266_USART_RX_PIN                          GPIO_Pin_11
-#define      macESP8266_USART_IRQ                             USART3_IRQn
-#define      macESP8266_USART_INT_FUN                         USART3_IRQHandler
+#define      macESP8266_USARTx                                USART3                /* ¶¨ÒåESP8266´®¿ÚÎª´®¿Ú3*/
+#define      macESP8266_USART_APBxClock_FUN                   RCC_APB1PeriphClockCmd/* ÖØ¶¨Òå¿ªÆôESP8266 USART µÄÊ±ÖÓº¯Êý */
+#define      macESP8266_USART_CLK                             RCC_APB1Periph_USART3 /* ÖØ¶¨ÒåESP8266 USART3 */
+#define      macESP8266_USART_GPIO_APBxClock_FUN              RCC_APB2PeriphClockCmd /* ÖØ¶¨Òå¿ªÆôESP8266 USART GPIO µÄÊ±ÖÓº¯Êý */
+#define      macESP8266_USART_GPIO_CLK                        RCC_APB2Periph_GPIOB   /* ¶¨ÒåESP8266 ´®¿Ú PIO Ê±ÖÓ*/    
+#define      macESP8266_USART_TX_PORT                         GPIOB                  /* ¶¨ÒåESP8266 ´®¿Ú ·¢ËÍ GPIO ¶Ë¿Ú*/
+#define      macESP8266_USART_TX_PIN                          GPIO_Pin_10            /* ¶¨ÒåESP8266 ´®¿Ú ·¢ËÍ GPIO Òý½Å*/
+#define      macESP8266_USART_RX_PORT                         GPIOB                  /* ¶¨ÒåESP8266 ´®¿Ú ½ÓÊÕ GPIO ¶Ë¿Ú*/
+#define      macESP8266_USART_RX_PIN                          GPIO_Pin_11            /* ¶¨ÒåESP8266 ´®¿Ú ½ÓÊÕ GPIO Òý½Å*/
+#define      macESP8266_USART_IRQ                             USART3_IRQn             /* ÖØ¶¨ÒåESP8266 ´®¿Ú ÖÐ¶Ï*/
+#define      macESP8266_USART_INT_FUN                         USART3_IRQHandler      /* ÖØ¶¨ÒåESP8266 ´®¿Ú ÖÐ¶Ïº¯Êý*/
 
 
 
