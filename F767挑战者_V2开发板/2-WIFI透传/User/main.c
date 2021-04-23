@@ -43,7 +43,7 @@ int main(void)
 		
 		ESP8266_Init (); 
 		
-		printf("\r\n***野火h750挑战者WIFI透传实验***\r\n");
+		printf("\r\n***野火F767挑战者开发板实验***\r\n");
 		
 		ESP8266_StaTcpClient_UnvarnishTest ();
 		

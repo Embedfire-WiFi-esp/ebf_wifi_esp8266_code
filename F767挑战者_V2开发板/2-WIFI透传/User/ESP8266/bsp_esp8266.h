@@ -69,13 +69,13 @@ extern struct  STRUCT_USARTx_Fram                                  //´®¿ÚÊý¾ÝÖ¡µ
 
 
 /******************************** ESP8266 Á¬½ÓÒý½Å¶¨Òå ***********************************/
-#define      macESP8266_CH_PD_CLK_ENABLE()                    __HAL_RCC_GPIOC_CLK_ENABLE()
-#define      macESP8266_CH_PD_PORT                            GPIOC
+#define      macESP8266_CH_PD_CLK_ENABLE()                    __HAL_RCC_GPIOE_CLK_ENABLE()
+#define      macESP8266_CH_PD_PORT                            GPIOE
 #define      macESP8266_CH_PD_PIN                             GPIO_PIN_4
 
-#define      macESP8266_RST_CLK_ENABLE()                      __HAL_RCC_GPIOA_CLK_ENABLE()
-#define      macESP8266_RST_PORT                              GPIOA
-#define      macESP8266_RST_PIN                               GPIO_PIN_12
+#define      macESP8266_RST_CLK_ENABLE()                      __HAL_RCC_GPIOD_CLK_ENABLE()
+#define      macESP8266_RST_PORT                              GPIOD
+#define      macESP8266_RST_PIN                               GPIO_PIN_6
 
  
 
