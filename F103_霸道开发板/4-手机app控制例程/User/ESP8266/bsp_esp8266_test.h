@@ -22,7 +22,8 @@
 /********************************** ²âÊÔº¯ÊıÉùÃ÷ ***************************************/
 void                     ESP8266_StaTcpClient_UnvarnishTest  ( void );
 
-
+void ESP8266_StaTcpClient_Unvarnish_ConfigTest(void);
+void ESP8266_CheckRecv_SendDataTest(void);
 
 #endif
 

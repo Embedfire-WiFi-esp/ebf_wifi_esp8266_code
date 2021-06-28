@@ -1,6 +1,11 @@
 #include "bsp_dht11.h"
-#include "bsp_SysTick.h"
+#include "core_delay.h" 
 
+
+/* DHT11延时函数使用DWT外设实现，因为SysTick的延时精度被设置为了1ms，不能提供us级别的延时 */
+
+#define DHT11_DELAY_US(us)  CPU_TS_Tmr_Delay_US(us)
+#define DHT11_DELAY_MS(ms)  CPU_TS_Tmr_Delay_MS(ms)
 
 
 static void                           DHT11_GPIO_Config                       ( void );
@@ -116,7 +121,7 @@ static uint8_t DHT11_ReadByte ( void )
 		/*DHT11 以26~28us的高电平表示“0”，以70us高电平表示“1”，
 		 *通过检测 x us后的电平即可区别这两个状 ，x 即下面的延时 
 		 */
-		Delay_us(40); //延时x us 这个延时需要大于数据0持续的时间即可	   	  
+		DHT11_DELAY_US(40); //延时x us 这个延时需要大于数据0持续的时间即可	   	  
 
 		if(macDHT11_Dout_IN()==Bit_SET)/* x us后仍为高电平表示数据“1” */
 		{
@@ -147,12 +152,12 @@ uint8_t DHT11_Read_TempAndHumidity(DHT11_Data_TypeDef *DHT11_Data)
 	/*主机拉低*/
 	macDHT11_Dout_0;
 	/*延时18ms*/
-	Delay_ms(18);
+	DHT11_DELAY_MS(18);
 
 	/*总线拉高 主机延时30us*/
 	macDHT11_Dout_1; 
 
-	Delay_us(30);   //延时30us
+	DHT11_DELAY_US(30);   //延时30us
 
 	/*主机设为输入 判断从机响应信号*/ 
 	DHT11_Mode_IPU();
