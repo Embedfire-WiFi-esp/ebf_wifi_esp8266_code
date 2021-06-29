@@ -49,8 +49,11 @@ int main ( void )
 	printf ( "\r\n野火 WF-ESP8266 WiFi模块测试例程\r\n" );                          //打印测试例程提示信息
 	
   
-  ESP8266_StaTcpClient_Unvarnish_ConfigTest();                                  //对ESP8266进行配置
-  
+  #ifndef BUILTAP_TEST
+  ESP8266_StaTcpServer_ConfigTest();                                             //对ESP8266进行配置 STA模式
+  #else
+  ESP8266_ApTcpServer_ConfigTest();                                              //对ESP8266进行配置 AP模式
+  #endif
   
   while ( 1 )
   {
