@@ -10,7 +10,9 @@
 
 #define LED_CMD_NUMBER   8
 char *ledCmd[8] = { "LED_RED","LED_GREEN","LED_BLUE","LED_YELLOW","LED_PURPLE","LED_CYAN","LED_WHITE","LED_RGBOFF" };
-             
+
+DHT11_Data_TypeDef DHT11_Data;
+
 volatile uint8_t ucTcpClosedFlag = 0;
 
 
@@ -91,14 +93,13 @@ void ESP8266_SendDHT11DataTest(void)
 {
   char cStr [ 100 ] = { 0 };
   uint8_t ucStatus;
- 	DHT11_Data_TypeDef DHT11_Data;
   
-  if ( DHT11_Read_TempAndHumidity ( & DHT11_Data ) == SUCCESS )       //读取 DHT11 温湿度信息
+  if( 1 == read_dht11_finish )
     sprintf ( cStr, "\r\n\r\n读取DHT11成功!\r\n湿度为%d.%d ％RH ，温度为 %d.%d℃ \r\n", 
               DHT11_Data.humi_int, DHT11_Data.humi_deci, DHT11_Data.temp_int, DHT11_Data.temp_deci );
   else
 		sprintf ( cStr, "Read DHT11 ERROR!\r\n" );
-		
+  
   printf ( "%s", cStr );                                             //打印读取 DHT11 温湿度信息
 
   ESP8266_SendString ( ENABLE, cStr, 0, Single_ID_0 );               //发送 DHT11 温湿度信息到网络调试助手

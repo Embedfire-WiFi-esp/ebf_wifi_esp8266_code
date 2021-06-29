@@ -33,9 +33,6 @@
 #include "bsp_usart.h"
 
 
-uint32_t Task_Delay[TASK_DELAY_NUM];  //任务计时的数组，用来保存计时
-
-
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -147,12 +144,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  unsigned char i;
 
-  for(i=0; i<TASK_DELAY_NUM; i++)
-  {
-    Task_Delay[i] ++; // 任务延时时间++，超过指定时间后就会执行对应的任务
-  }
 }
 
 

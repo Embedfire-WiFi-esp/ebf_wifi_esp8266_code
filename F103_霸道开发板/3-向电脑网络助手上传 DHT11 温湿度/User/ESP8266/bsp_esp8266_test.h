@@ -18,6 +18,7 @@
 
 /********************************** 外部全局变量 ***************************************/
 extern volatile uint8_t ucTcpClosedFlag;
+extern int read_dht11_finish;
 
 
 

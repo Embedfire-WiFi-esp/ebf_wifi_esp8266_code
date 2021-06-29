@@ -35,8 +35,7 @@ int main ( void )
 {
 	/* 初始化 */
   USART_Config ();                                                      //初始化串口1
-	SysTick_Init ();                                                      //配置 SysTick 为 1ms 中断一次 
-  CPU_TS_TmrInit();                                                     //初始化DWT计数器
+  CPU_TS_TmrInit();                                                     //初始化DWT计数器，用于延时函数
   LED_GPIO_Config();                                                    //初始化RGB彩灯
 	ESP8266_Init ();                                                      //初始化WiFi模块使用的接口和外设
 	DHT11_Init ();                                                        //初始化DHT11
@@ -44,48 +43,25 @@ int main ( void )
 	
 	printf ( "\r\n野火 WF-ESP8266 WiFi模块测试例程\r\n" );                 //打印测试例程提示信息
 
-	  
   ESP8266_StaTcpClient_Unvarnish_ConfigTest();                          //对ESP8266进行配置
+  
+  
+	SysTick_Init ();                                                      //配置 SysTick 为 10ms 中断一次，在中断里读取传感器数据
   
   
   while ( 1 )
   {
     
-    if(Task_Delay[0] >= TASK_DELAY_0)     //判断是否执行任务0
+    if( read_dht11_finish ) // read_dht11_finish == 1 or read_dht11_finish == -1
     {
-      Task_Delay[0] = 0;
       
-      //执行任务0
-      //LED1_TOGGLE;
+      ESP8266_SendDHT11DataTest(); // ESP8266 发送一次温湿度数据
+      //printf("read_dht11_finish=%d\r\n", read_dht11_finish);    //Debug
+      read_dht11_finish = 0;       // 清零标志位
       
+      LED1_TOGGLE;
     }
     
-    if(Task_Delay[1] >= TASK_DELAY_1)     //判断是否执行任务1
-    {
-      Task_Delay[1] = 0;
-      
-      //执行任务1
-      //LED2_TOGGLE;
-      
-      
-    }
-    
-    if(Task_Delay[2] >= TASK_DELAY_2)     //判断是否执行任务2
-    {
-      Task_Delay[2] = 0;
-      
-      //执行任务2
-      
-      LED3_TOGGLE;
-      ESP8266_SendDHT11DataTest(); // ESP8266 每两秒发送一次温湿度数据
-    }
-
-    
-    /*****************************************************************************/
-    // 最好确保任务能在其执行周期内完成执行
-    // Delay_ms(1000);
-    // 另外，不要在判断是否执行任务的这些 if 语句外面像这样子加入延时，会影响任务的执行
-    /*****************************************************************************/
   }
 	
 }
