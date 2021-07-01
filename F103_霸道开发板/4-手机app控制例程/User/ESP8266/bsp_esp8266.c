@@ -742,9 +742,9 @@ uint8_t ESP8266_CIPAP ( char * pApIp )
 
 
 /*
- * 函数名：ESP8266_CIPAP
- * 描述  ：设置模块的 AP IP
- * 输入  ：pApIp，模块的 AP IP
+ * 函数名：ESP8266_CIPSTA
+ * 描述  ：设置模块的 STA IP
+ * 输入  ：pStaIp，模块的 STA IP
  * 返回  : 1，设置成功
  *         0，设置失败
  * 调用  ：被外部调用

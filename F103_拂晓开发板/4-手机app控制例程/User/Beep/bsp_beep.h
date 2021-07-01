@@ -9,9 +9,9 @@
 
 /******************** BEEP 引脚配置参数定义 **************************/
 #define             macBEEP_GPIO_APBxClock_FUN              RCC_APB2PeriphClockCmd
-#define             macBEEP_GPIO_CLK                        RCC_APB2Periph_GPIOA
-#define             macBEEP_PORT                            GPIOA
-#define             macBEEP_PIN                             GPIO_Pin_8
+#define             macBEEP_GPIO_CLK                        RCC_APB2Periph_GPIOE
+#define             macBEEP_PORT                            GPIOE
+#define             macBEEP_PIN                             GPIO_Pin_7
 
 
 

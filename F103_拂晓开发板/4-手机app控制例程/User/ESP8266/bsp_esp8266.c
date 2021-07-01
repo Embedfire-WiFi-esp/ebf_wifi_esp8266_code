@@ -4,6 +4,7 @@
 #include <string.h>  
 #include <stdbool.h>
 #include "bsp_SysTick.h"
+#include "./dwt_delay/core_delay.h"   
 
 
 
@@ -225,18 +226,25 @@ bool ESP8266_Cmd ( char * cmd, char * reply1, char * reply2, u32 waittime )
 //	while ( ! ESP8266_Cmd ( "AT", "OK", NULL, 200 ) ) ESP8266_Rst ();  	
 
 //}
-void ESP8266_AT_Test ( void )
+bool ESP8266_AT_Test ( void )
 {
 	char count=0;
 	
 	macESP8266_RST_HIGH_LEVEL();	
-	Delay_ms ( 1000 );
+  printf("\r\nAT测试.....\r\n");
+	Delay_ms ( 2000 );
 	while ( count < 10 )
 	{
-		if( ESP8266_Cmd ( "AT", "OK", NULL, 500 ) ) return;
+    printf("\r\nAT测试次数 %d......\r\n", count);
+		if( ESP8266_Cmd ( "AT", "OK", NULL, 500 ) )
+    {
+      printf("\r\nAT测试启动成功 %d......\r\n", count);
+      return 1;
+    }
 		ESP8266_Rst();
 		++ count;
 	}
+  return 0;
 }
 
 
@@ -522,6 +530,49 @@ uint8_t ESP8266_Inquire_ApIp ( char * pApIp, uint8_t ucArrayLength )
 
 
 /*
+ * 函数名：ESP8266_Inquire_ApIp
+ * 描述  ：获取 F-ESP8266 的 AP IP
+ * 输入  ：pApIp，存放 AP IP 的数组的首地址
+ *         ucArrayLength，存放 AP IP 的数组的长度
+ * 返回  : 0，获取失败
+ *         1，获取成功
+ * 调用  ：被外部调用
+ */
+uint8_t ESP8266_Inquire_StaIp ( char * pApIp, uint8_t ucArrayLength )
+{
+	char uc;
+	
+	char * pCh;
+	
+	
+  ESP8266_Cmd ( "AT+CIFSR", "OK", 0, 500 );
+	
+	pCh = strstr ( strEsp8266_Fram_Record .Data_RX_BUF, "STAIP,\"" );
+	
+	if ( pCh )
+		pCh += 7;
+	
+	else
+		return 0;
+	
+	for ( uc = 0; uc < ucArrayLength; uc ++ )
+	{
+		pApIp [ uc ] = * ( pCh + uc);
+		
+		if ( pApIp [ uc ] == '\"' )
+		{
+			pApIp [ uc ] = '\0';
+			break;
+		}
+		
+	}
+	
+	return 1;
+	
+}
+
+
+/*
  * 函数名：ESP8266_UnvarnishSend
  * 描述  ：配置WF-ESP8266模块进入透传发送
  * 输入  ：无
@@ -694,4 +745,29 @@ uint8_t ESP8266_CIPAP ( char * pApIp )
 		return 0;
 	
 }
+
+
+/*
+ * 函数名：ESP8266_CIPSTA
+ * 描述  ：设置模块的 STA IP
+ * 输入  ：pStaIp，模块的 STA IP
+ * 返回  : 1，设置成功
+ *         0，设置失败
+ * 调用  ：被外部调用
+ */
+uint8_t ESP8266_CIPSTA ( char * pStaIp )
+{
+	char cCmd [ 30 ];
+		
+	
+	sprintf ( cCmd, "AT+CIPSTA=\"%s\"", pStaIp );
+	
+  if ( ESP8266_Cmd ( cCmd, "OK", 0, 5000 ) )
+		return 1;
+ 
+	else 
+		return 0;
+	
+}
+
 

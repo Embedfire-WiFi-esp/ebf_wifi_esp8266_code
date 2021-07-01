@@ -32,7 +32,12 @@ static void LED_GPIO_Config ( void )
 	/* ≈‰÷√ LED3 “˝Ω≈ */
 	RCC_APB2PeriphClockCmd ( macLED3_GPIO_CLK, ENABLE ); 															   
 	GPIO_InitStructure.GPIO_Pin = macLED3_GPIO_PIN;	
-	GPIO_Init ( macLED3_GPIO_PORT, & GPIO_InitStructure );		
+	GPIO_Init ( macLED3_GPIO_PORT, & GPIO_InitStructure );	
+
+  /* ≈‰÷√ LED4 “˝Ω≈ */
+	RCC_APB2PeriphClockCmd ( macLED4_GPIO_CLK, ENABLE ); 															   
+	GPIO_InitStructure.GPIO_Pin = macLED4_GPIO_PIN;	
+	GPIO_Init ( macLED4_GPIO_PORT, & GPIO_InitStructure );		
 	  		
 }
 
@@ -49,7 +54,7 @@ void LED_Init ( void )
 	macLED1_OFF();
 	macLED2_OFF();
 	macLED3_OFF();
-	
+	macLED4_OFF();
 }
 
 

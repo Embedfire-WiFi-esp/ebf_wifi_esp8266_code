@@ -9,7 +9,7 @@
 #include "bsp_usart.h"
 
 #define LED_CMD_NUMBER   8
-char *ledCmd[8] = { "LED_RED","LED_GREEN","LED_BLUE","LED_YELLOW","LED_PURPLE","LED_CYAN","LED_WHITE","LED_RGBOFF" };
+char *ledCmd[ LED_CMD_NUMBER ] = { "LED_RED","LED_GREEN","LED_BLUE","LED_YELLOW","LED_PURPLE","LED_CYAN","LED_WHITE","LED_RGBOFF" };
              
 volatile uint8_t ucTcpClosedFlag = 0;
 

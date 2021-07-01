@@ -29,8 +29,27 @@
 #include <string.h> 
 #include "bsp_SysTick.h"
 #include "bsp_esp8266.h"
-#include "test.h"
+#include "bsp_esp8266_test.h"
 #include "bsp_usart.h"
+#include "bsp_dht11.h"
+
+
+#define TASK_DELAY_NUM  2       //总任务个数，可以自己根据实际情况修改
+#define TASK_DELAY_0    200    //任务0延时 200*10 毫秒后执行：读取 DHT11 传感器数据
+#define TASK_DELAY_1    50     //任务1延时 50*10 毫秒后执行：
+
+uint32_t Task_Delay_Group[TASK_DELAY_NUM];  //任务数组，用来计时、并判断是否执行对应任务
+
+/* 读传感器数据完成标志 */
+// - 标志置 1表示完成读取，在主循环处理数据
+// - 标志置 0表示未完成读取
+// - 标志置-1表示读取错误
+int read_dht11_finish;
+
+
+// 外部变量
+extern DHT11_Data_TypeDef DHT11_Data;
+
 
 
 /** @addtogroup STM32F10x_StdPeriph_Template
@@ -143,7 +162,41 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-	TimingDelay_Decrement();	
+  int i;
+  
+  for(i=0; i<TASK_DELAY_NUM; i++)
+  {
+    Task_Delay_Group[i] ++;                   //任务计时，时间到后执行
+  }
+  
+  /* 处理任务0 */
+  if(Task_Delay_Group[0] >= TASK_DELAY_0)     //判断是否执行任务0
+  {
+    Task_Delay_Group[0] = 0;                  //置0重新计时
+    
+    /* 任务0：读取 DHT11 传感器数据 */
+    if( ! read_dht11_finish )
+    {
+      if ( DHT11_Read_TempAndHumidity ( & DHT11_Data ) == SUCCESS ) //读取 DHT11 温湿度信息
+      {
+        read_dht11_finish = 1; //读取完成
+      }
+      else
+      {
+        read_dht11_finish = -1; //读取错误
+      }
+    }
+  }
+  
+  /* 处理任务1 */
+  if(Task_Delay_Group[1] >= TASK_DELAY_1)     //判断是否执行任务1
+  {
+    Task_Delay_Group[1] = 0;                  //置0重新计时
+    
+    
+    /* 任务1：xxxxx */
+    //printf("Test\r\n");
+  }
 }
 
 
@@ -153,6 +206,7 @@ void SysTick_Handler(void)
 /*  available peripheral interrupt handler's name please refer to the startup */
 /*  file (startup_stm32f10x_xx.s).                                            */
 /******************************************************************************/
+
 // 串口中断服务函数
 void DEBUG_USART_IRQHandler(void)
 {
@@ -187,7 +241,7 @@ void macESP8266_USART_INT_FUN ( void )
 		ucCh  = USART_ReceiveData( macESP8266_USARTx );
 		
 		if ( strEsp8266_Fram_Record .InfBit .FramLength < ( RX_BUF_MAX_LEN - 1 ) )                       //预留1个字节写结束符
-			   strEsp8266_Fram_Record .Data_RX_BUF [ strEsp8266_Fram_Record .InfBit .FramLength ++ ]  = ucCh;
+			strEsp8266_Fram_Record .Data_RX_BUF [ strEsp8266_Fram_Record .InfBit .FramLength ++ ]  = ucCh;
 
 	}
 	 	 
@@ -197,7 +251,7 @@ void macESP8266_USART_INT_FUN ( void )
 		
 		ucCh = USART_ReceiveData( macESP8266_USARTx );                                                              //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)
 	
-		ucTcpClosedFlag = strstr ( strEsp8266_Fram_Record .Data_RX_BUF, "CLOSED\r\n" ) ? 1 : 0;
+		ucTcpClosedFlag = strstr ( strEsp8266_Fram_Record .Data_RX_BUF, "CLOSED\r\n" ) ? 1 : 0;                   //获取连接状态
 		
   }	
 
