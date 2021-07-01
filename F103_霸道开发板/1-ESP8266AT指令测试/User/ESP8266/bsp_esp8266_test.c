@@ -60,6 +60,11 @@ void Get_ESP82666_Cmd( char * cmd)
 }
 
 
+/**
+  * @brief  ESP8266 StaTcpClient Unvarnish 配置测试函数
+  * @param  无
+  * @retval 无
+  */
 void ESP8266_StaTcpClient_Unvarnish_ConfigTest(void)
 {
   printf( "\r\n正在配置 ESP8266 ......\r\n" );
@@ -88,6 +93,11 @@ void ESP8266_StaTcpClient_Unvarnish_ConfigTest(void)
 }
 
 
+/**
+  * @brief  ESP8266 检查是否接收到了数据，检查连接和掉线重连
+  * @param  无
+  * @retval 无
+  */
 void ESP8266_CheckRecvDataTest(void)
 {
   uint8_t ucStatus;

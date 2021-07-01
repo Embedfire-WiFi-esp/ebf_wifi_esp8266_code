@@ -67,7 +67,7 @@ extern struct  STRUCT_USARTx_Fram                                  //´®¿ÚÊý¾ÝÖ¡µ
 	
 } strEsp8266_Fram_Record;
 
-
+extern struct STRUCT_USARTx_Fram strUSART_Fram_Record;
 
 /******************************** ESP8266 Á¬½ÓÒý½Å¶¨Òå ***********************************/
 #define      macESP8266_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
@@ -115,7 +115,7 @@ extern struct  STRUCT_USARTx_Fram                                  //´®¿ÚÊý¾ÝÖ¡µ
 void                     ESP8266_Init                        ( void );
 void                     ESP8266_Rst                         ( void );
 bool                     ESP8266_Cmd                         ( char * cmd, char * reply1, char * reply2, u32 waittime );
-void                     ESP8266_AT_Test                     ( void );
+bool                     ESP8266_AT_Test                     ( void );
 bool                     ESP8266_Net_Mode_Choose             ( ENUM_Net_ModeTypeDef enumMode );
 bool                     ESP8266_JoinAP                      ( char * pSSID, char * pPassWord );
 bool                     ESP8266_BuildAP                     ( char * pSSID, char * pPassWord, ENUM_AP_PsdMode_TypeDef enunPsdMode );

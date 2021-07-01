@@ -29,7 +29,29 @@
 #include <string.h> 
 #include "bsp_SysTick.h"
 #include "bsp_esp8266.h"
-#include "test.h"
+#include "bsp_esp8266_test.h"
+#include "bsp_usart1.h"
+#include "bsp_dht11.h"
+
+
+
+#define TASK_DELAY_NUM  2       //总任务个数，可以自己根据实际情况修改
+#define TASK_DELAY_0    200    //任务0延时 200*10 毫秒后执行：读取 DHT11 传感器数据
+#define TASK_DELAY_1    50     //任务1延时 50*10 毫秒后执行：
+
+uint32_t Task_Delay_Group[TASK_DELAY_NUM];  //任务数组，用来计时、并判断是否执行对应任务
+
+/* 读传感器数据完成标志 */
+// - 标志置 1表示完成读取，在主循环处理数据
+// - 标志置 0表示未完成读取
+// - 标志置-1表示读取错误
+int read_dht11_finish;
+
+
+// 外部变量
+extern DHT11_Data_TypeDef DHT11_Data;
+
+
 
 
 
@@ -143,7 +165,41 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-	TimingDelay_Decrement();	
+  int i;
+  
+  for(i=0; i<TASK_DELAY_NUM; i++)
+  {
+    Task_Delay_Group[i] ++;                   //任务计时，时间到后执行
+  }
+  
+  /* 处理任务0 */
+  if(Task_Delay_Group[0] >= TASK_DELAY_0)     //判断是否执行任务0
+  {
+    Task_Delay_Group[0] = 0;                  //置0重新计时
+    
+    /* 任务0：读取 DHT11 传感器数据 */
+    if( ! read_dht11_finish )
+    {
+      if ( DHT11_Read_TempAndHumidity ( & DHT11_Data ) == SUCCESS ) //读取 DHT11 温湿度信息
+      {
+        read_dht11_finish = 1; //读取完成
+      }
+      else
+      {
+        read_dht11_finish = -1; //读取错误
+      }
+    }
+  }
+  
+  /* 处理任务1 */
+  if(Task_Delay_Group[1] >= TASK_DELAY_1)     //判断是否执行任务1
+  {
+    Task_Delay_Group[1] = 0;                  //置0重新计时
+    
+    
+    /* 任务1：xxxxx */
+    //printf("Test\r\n");
+  }
 }
 
 
@@ -153,6 +209,32 @@ void SysTick_Handler(void)
 /*  available peripheral interrupt handler's name please refer to the startup */
 /*  file (startup_stm32f10x_xx.s).                                            */
 /******************************************************************************/
+
+/**
+  * @brief  串口1中断服务函数
+  * @param  None
+  * @retval None
+  */
+void DEBUG_USART_IRQHandler(void)
+{
+  uint8_t ucCh;
+	if ( USART_GetITStatus ( DEBUG_USARTx, USART_IT_RXNE ) != RESET )
+	{
+		ucCh  = USART_ReceiveData( DEBUG_USARTx );
+		
+		if ( strUSART_Fram_Record .InfBit .FramLength < ( RX_BUF_MAX_LEN - 1 ) )                       //预留1个字节写结束符
+			   strUSART_Fram_Record .Data_RX_BUF [ strUSART_Fram_Record .InfBit .FramLength ++ ]  = ucCh;
+
+	}
+	 	 
+	if ( USART_GetITStatus( DEBUG_USARTx, USART_IT_IDLE ) == SET )                                         //数据帧接收完毕
+	{
+    strUSART_Fram_Record .InfBit .FramFinishFlag = 1;		
+		
+		ucCh = USART_ReceiveData( DEBUG_USARTx );                                                              //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)	
+  }
+}
+
 /**
   * @brief  This function handles macESP8266_USARTx Handler.
   * @param  None

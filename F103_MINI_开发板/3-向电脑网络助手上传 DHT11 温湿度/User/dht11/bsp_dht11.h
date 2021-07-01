@@ -19,21 +19,19 @@ typedef struct
 } DHT11_Data_TypeDef;
 
 
+#define      macDHT11_Dout_SCK_APBxClock_FUN              RCC_APB2PeriphClockCmd
+#define      macDHT11_Dout_GPIO_CLK                       RCC_APB2Periph_GPIOC
 
-/************************** DHT11 连接引脚定义********************************/
-#define      DHT11_Dout_SCK_APBxClock_FUN              RCC_APB2PeriphClockCmd
-#define      DHT11_Dout_GPIO_CLK                       RCC_APB2Periph_GPIOC
-
-#define      DHT11_Dout_GPIO_PORT                      GPIOC
-#define      DHT11_Dout_GPIO_PIN                       GPIO_Pin_0
+#define      macDHT11_Dout_GPIO_PORT                      GPIOC
+#define      macDHT11_Dout_GPIO_PIN                       GPIO_Pin_0
 
 
 
 /************************** DHT11 函数宏定义********************************/
-#define      DHT11_Dout_0	                            GPIO_ResetBits ( DHT11_Dout_GPIO_PORT, DHT11_Dout_GPIO_PIN ) 
-#define      DHT11_Dout_1	                            GPIO_SetBits ( DHT11_Dout_GPIO_PORT, DHT11_Dout_GPIO_PIN ) 
+#define      macDHT11_Dout_0	                            GPIO_ResetBits ( macDHT11_Dout_GPIO_PORT, macDHT11_Dout_GPIO_PIN ) 
+#define      macDHT11_Dout_1	                            GPIO_SetBits ( macDHT11_Dout_GPIO_PORT, macDHT11_Dout_GPIO_PIN ) 
 
-#define      DHT11_Dout_IN()	                          GPIO_ReadInputDataBit ( DHT11_Dout_GPIO_PORT, DHT11_Dout_GPIO_PIN ) 
+#define      macDHT11_Dout_IN()	                          GPIO_ReadInputDataBit ( macDHT11_Dout_GPIO_PORT, macDHT11_Dout_GPIO_PIN ) 
 
 
 

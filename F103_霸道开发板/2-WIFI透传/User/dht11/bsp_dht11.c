@@ -1,8 +1,8 @@
 #include "bsp_dht11.h"
-#include "core_delay.h" 
+#include "./dwt_delay/core_delay.h"
 
 
-/* DHT11延时函数使用DWT外设实现，因为SysTick的延时精度被设置为了1ms，不能提供us级别的延时 */
+/* DHT11延时函数使用DWT外设实现，因为SysTick的延时精度被设置为了10ms，不能提供us级别的延时 */
 
 #define DHT11_DELAY_US(us)  CPU_TS_Tmr_Delay_US(us)
 #define DHT11_DELAY_MS(ms)  CPU_TS_Tmr_Delay_MS(ms)

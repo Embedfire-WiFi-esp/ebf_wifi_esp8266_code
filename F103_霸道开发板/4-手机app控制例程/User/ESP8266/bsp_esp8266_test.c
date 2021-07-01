@@ -17,8 +17,6 @@ char cStr [ 100 ] = { 0 }, cCh;
 char * pCh, * pCh1;
 DHT11_Data_TypeDef DHT11_Data; 
 
-volatile uint8_t ucTcpClosedFlag = 0;
-
 
 #ifndef BUILTAP_TEST
 
@@ -48,7 +46,7 @@ void ESP8266_StaTcpServer_ConfigTest(void)
 	while ( !	ESP8266_StartOrShutServer ( ENABLE, macUser_ESP8266_TcpServer_Port, macUser_ESP8266_TcpServer_OverTime ) );
 
   ESP8266_Inquire_StaIp ( cStr, 20 );
-	printf ( "\n本模块已连接WIFI为%s，\nSTA IP 为：%s，开启的端口为：%s\n手机网络助手连接该 IP 和端口，最多可连接5个客户端\n",
+	printf ( "\n本模块已连接WIFI为 %s，\nSTA IP 为：%s，开启的端口为：%s\n手机网络助手连接该 IP 和端口，最多可连接5个客户端\n",
            macUser_ESP8266_ApSsid, cStr, macUser_ESP8266_TcpServer_Port );
 	
 	
@@ -90,7 +88,7 @@ void ESP8266_ApTcpServer_ConfigTest(void)
 
 	
   ESP8266_Inquire_ApIp ( cStr, 20 );
-	printf ( "\n本模块WIFI为%s，密码开放\nAP IP 为：%s，开启的端口为：%s\n手机网络助手连接该 IP 和端口，最多可连接5个客户端\n",
+	printf ( "\n本模块WIFI为 %s，密码开放\nAP IP 为：%s，开启的端口为：%s\n手机网络助手连接该 IP 和端口，最多可连接5个客户端\n",
            macUser_ESP8266_BulitApSsid, cStr, macUser_ESP8266_TcpServer_Port );
 	
 	

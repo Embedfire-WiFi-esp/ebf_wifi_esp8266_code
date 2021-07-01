@@ -155,7 +155,11 @@ void SysTick_Handler(void)
 /*  file (startup_stm32f10x_xx.s).                                            */
 /******************************************************************************/
 
-// 串口中断服务函数
+/**
+  * @brief  串口1中断服务函数
+  * @param  None
+  * @retval None
+  */
 void DEBUG_USART_IRQHandler(void)
 {
   uint8_t ucCh;
@@ -175,6 +179,7 @@ void DEBUG_USART_IRQHandler(void)
 		ucCh = USART_ReceiveData( DEBUG_USARTx );                                                              //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)	
   }	
 }
+
 /**
   * @brief  This function handles macESP8266_USARTx Handler.
   * @param  None
@@ -199,7 +204,7 @@ void macESP8266_USART_INT_FUN ( void )
 		
 		ucCh = USART_ReceiveData( macESP8266_USARTx );                                                              //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)
 	
-		ucTcpClosedFlag = strstr ( strEsp8266_Fram_Record .Data_RX_BUF, "CLOSED\r\n" ) ? 1 : 0;
+		ucTcpClosedFlag = strstr ( strEsp8266_Fram_Record .Data_RX_BUF, "CLOSED\r\n" ) ? 1 : 0;                   //获取连接状态
 		
   }	
 

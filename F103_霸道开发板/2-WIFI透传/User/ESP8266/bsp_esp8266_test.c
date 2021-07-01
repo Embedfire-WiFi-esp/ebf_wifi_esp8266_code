@@ -60,6 +60,11 @@ void Get_ESP82666_Cmd( char * cmd)
 }
 
 
+/**
+  * @brief  ESP8266 StaTcpClient Unvarnish 配置测试函数
+  * @param  无
+  * @retval 无
+  */
 void ESP8266_StaTcpClient_Unvarnish_ConfigTest(void)
 {
   printf( "\r\n正在配置 ESP8266 ......\r\n" );
@@ -88,6 +93,11 @@ void ESP8266_StaTcpClient_Unvarnish_ConfigTest(void)
 }
 
 
+/**
+  * @brief  ESP8266 检查是否接收到了数据，检查连接和掉线重连
+  * @param  无
+  * @retval 无
+  */
 void ESP8266_CheckRecvDataTest(void)
 {
   uint8_t ucStatus;
@@ -111,7 +121,7 @@ void ESP8266_CheckRecvDataTest(void)
   {                                                      
     for(i = 0;i < strEsp8266_Fram_Record .InfBit .FramLength; i++)               
     {
-       USART_SendData( DEBUG_USARTx ,strEsp8266_Fram_Record .Data_RX_BUF[i]);    //转发给ESP82636
+       USART_SendData( DEBUG_USARTx ,strEsp8266_Fram_Record .Data_RX_BUF[i]);    //转发给ESP8266
        while(USART_GetFlagStatus(DEBUG_USARTx,USART_FLAG_TC)==RESET){}
     }
      strEsp8266_Fram_Record .InfBit .FramLength = 0;                             //接收数据长度置零
