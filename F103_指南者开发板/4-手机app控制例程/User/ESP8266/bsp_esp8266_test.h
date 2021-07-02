@@ -22,8 +22,8 @@
 #endif
 
 
-#define   macUser_ESP8266_TcpServer_IP         "192.168.0.48"      //服务器开启的IP地址
-#define   macUser_ESP8266_TcpServer_Port       "8080"             //服务器开启的端口   
+#define   macUser_ESP8266_TcpServer_IP         "192.168.0.45"      //服务器开启的IP地址
+#define   macUser_ESP8266_TcpServer_Port       "8000"             //服务器开启的端口   
 
 #define   macUser_ESP8266_TcpServer_OverTime   "1800"             //服务器超时时间（单位：秒）
 

@@ -20,10 +20,10 @@ typedef struct
 
 
 #define      macDHT11_Dout_SCK_APBxClock_FUN              RCC_APB2PeriphClockCmd
-#define      macDHT11_Dout_GPIO_CLK                       RCC_APB2Periph_GPIOC
+#define      macDHT11_Dout_GPIO_CLK                       RCC_APB2Periph_GPIOA
 
-#define      macDHT11_Dout_GPIO_PORT                      GPIOC
-#define      macDHT11_Dout_GPIO_PIN                       GPIO_Pin_0
+#define      macDHT11_Dout_GPIO_PORT                      GPIOA
+#define      macDHT11_Dout_GPIO_PIN                       GPIO_Pin_15
 
 
 

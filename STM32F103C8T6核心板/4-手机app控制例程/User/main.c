@@ -42,7 +42,6 @@ int main ( void )
 	ESP8266_Init ();                                                               //初始化WiFi模块使用的接口和外设
 	DHT11_Init ();
   LED_GPIO_Config ();
-	BEEP_GPIO_Config ();
 	
 	
 	printf ( "\r\n野火 WF-ESP8266 WiFi模块测试例程\r\n" );                          //打印测试例程提示信息

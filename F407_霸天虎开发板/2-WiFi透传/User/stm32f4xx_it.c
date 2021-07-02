@@ -31,7 +31,9 @@
 #include "stm32f4xx_it.h"
 #include <string.h> 
 #include "./esp8266/bsp_esp8266.h"
+#include "./esp8266/bsp_esp8266_test.h"
 #include "./usart/bsp_debug_usart.h"
+
 /** @addtogroup STM32F429I_DISCOVERY_Examples
   * @{
   */
@@ -142,7 +144,6 @@ extern void TimingDelay_Decrement(void);
   */
 void SysTick_Handler(void)
 {
-  TimingDelay_Decrement();
 }
 
 /******************************************************************************/
@@ -196,6 +197,10 @@ void macESP8266_USART_INT_FUN ( void )
     strEsp8266_Fram_Record .InfBit .FramFinishFlag = 1;
 		
 		ucCh = USART_ReceiveData( macESP8266_USARTx );                                                              //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)
+		
+    ucTcpClosedFlag = strstr ( strEsp8266_Fram_Record .Data_RX_BUF, "CLOSED\r\n" ) ? 1 : 0;                   //获取连接状态
+
+    
   }	
 }
 /**

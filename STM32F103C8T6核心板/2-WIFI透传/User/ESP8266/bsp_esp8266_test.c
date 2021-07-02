@@ -9,8 +9,8 @@
 #include "bsp_usart1.h"
 
 
-#define LED_CMD_NUMBER   3
-char *ledCmd[LED_CMD_NUMBER] = { "LED1_ON","LED2_ON","LED_ALLOFF" };
+#define LED_CMD_NUMBER   4
+char *ledCmd[LED_CMD_NUMBER] = { "LED1_ON", "LED2_ON", "LED3_ON", "LED_ALLOFF" };
 
 
 volatile uint8_t ucTcpClosedFlag = 0;
@@ -41,8 +41,13 @@ void Get_ESP82666_Cmd( char * cmd)
         break;
       
       case 2:
+        LED3_ON;
+        break;
+      
+      case 3:
         LED1_OFF
         LED2_OFF;
+        LED3_OFF;
         break;
       
       default:

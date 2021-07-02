@@ -31,7 +31,7 @@
 #include "stm32f4xx_it.h"
 #include <string.h> 
 #include "./esp8266/bsp_esp8266.h"
-#include "./test/test.h"
+#include "./esp8266/bsp_esp8266_test.h"
 /** @addtogroup STM32F429I_DISCOVERY_Examples
   * @{
   */
@@ -142,7 +142,6 @@ extern void TimingDelay_Decrement(void);
   */
 void SysTick_Handler(void)
 {
-  TimingDelay_Decrement();
 }
 
 /******************************************************************************/

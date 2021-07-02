@@ -17,7 +17,7 @@
   
 #include "stm32f4xx.h"
 #include "./usart/bsp_debug_usart.h"
-#include "./systick/bsp_SysTick.h"
+#include "./dwt_delay/core_delay.h"   
 #include "./esp8266/bsp_esp8266.h"
 
 
@@ -28,13 +28,11 @@
   */
 int main(void)
 {	
-  /*初始化USART，配置模式为 115200 8-N-1*/
-  Debug_USART_Config();
- 
-	/* 系统定时器初始化 */
-	SysTick_Init();
-	
-	ESP8266_Init ();          //初始化WiFi模块使用的接口和外设
+  /* 初始化 */
+  Debug_USART_Config ();                                                      /*初始化USART 配置模式为 115200 8-N-1，中断接收*/
+  CPU_TS_TmrInit();                                                     //初始化DWT计数器 延时函数用到
+	ESP8266_Init ();                                                      //初始化WiFi模块使用的接口和外设
+  
 	printf("欢迎使用野火STM32开发板\n\n");
 	printf("这是一个ESP8266AT指令测试实验\n\n");
 	printf("请使用串口调试助手发送\"AT+换行回车\"测试ESP8266是否准备好\n\n");

@@ -11,8 +11,8 @@
 #define      macUser_ESP8266_ApSsid                       "embedfire2"                //要连接的热点的名称
 #define      macUser_ESP8266_ApPwd                        "wildfire"           //要连接的热点的密钥
 
-#define      macUser_ESP8266_TcpServer_IP                 "192.168.0.48"      //要连接的服务器的 IP
-#define      macUser_ESP8266_TcpServer_Port               "8080"               //要连接的服务器的端口
+#define      macUser_ESP8266_TcpServer_IP                 "192.168.0.45"      //要连接的服务器的 IP
+#define      macUser_ESP8266_TcpServer_Port               "8000"               //要连接的服务器的端口
 
 
 

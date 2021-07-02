@@ -150,6 +150,7 @@ void Usart_SendHalfWord( USART_TypeDef * pUSARTx, uint16_t ch)
 	USART_SendData(pUSARTx,temp_l);	
 	while (USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET);	
 }
+
 ///重定向c库函数printf到串口DEBUG_USART，重定向后可使用printf函数
 int fputc(int ch, FILE *f)
 {

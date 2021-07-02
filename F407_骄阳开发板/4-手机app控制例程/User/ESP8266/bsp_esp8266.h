@@ -71,35 +71,39 @@ extern struct  STRUCT_USARTx_Fram                                  //´®¿ÚÊý¾ÝÖ¡µ
 
 /******************************** ESP8266 Á¬½ÓÒý½Å¶¨Òå ***********************************/
 #define      macESP8266_CH_PD_APBxClock_FUN                   RCC_AHB1PeriphClockCmd
-#define      macESP8266_CH_PD_CLK                             RCC_AHB1Periph_GPIOA 
-#define      macESP8266_CH_PD_PORT                            GPIOA
-#define      macESP8266_CH_PD_PIN                             GPIO_Pin_4
+#define      macESP8266_CH_PD_CLK                             RCC_AHB1Periph_GPIOE 
+#define      macESP8266_CH_PD_PORT                            GPIOE
+#define      macESP8266_CH_PD_PIN                             GPIO_Pin_8
 
 #define      macESP8266_RST_APBxClock_FUN                     RCC_AHB1PeriphClockCmd
-#define      macESP8266_RST_CLK                               RCC_AHB1Periph_GPIOA
-#define      macESP8266_RST_PORT                              GPIOA
-#define      macESP8266_RST_PIN                               GPIO_Pin_3
+#define      macESP8266_RST_CLK                               RCC_AHB1Periph_GPIOE
+#define      macESP8266_RST_PORT                              GPIOE
+#define      macESP8266_RST_PIN                               GPIO_Pin_9
+
+
 
 
 #define      macESP8266_USART_BAUD_RATE                       115200
 
-#define      macESP8266_USARTx                                USART6
-#define      macESP8266_USART_APBxClock_FUN                   RCC_APB2PeriphClockCmd
-#define      macESP8266_USART_CLK                             RCC_APB2Periph_USART6
+#define      macESP8266_USARTx                                USART3
+#define      macESP8266_USART_APBxClock_FUN                   RCC_APB1PeriphClockCmd
+#define      macESP8266_USART_CLK                             RCC_APB1Periph_USART3
 #define      macESP8266_USART_GPIO_APBxClock_FUN              RCC_AHB1PeriphClockCmd
-#define      macESP8266_USART_GPIO_CLK                        RCC_AHB1Periph_GPIOC     
-#define      macESP8266_USART_TX_PORT                         GPIOC   
-#define      macESP8266_USART_TX_PIN                          GPIO_Pin_6
-#define      macESP8266_USART_TX_AF                           GPIO_AF_USART6
-#define      macESP8266_USART_TX_SOURCE                       GPIO_PinSource6 
+#define      macESP8266_USART_GPIO_CLK                        RCC_AHB1Periph_GPIOD 
+#define      macESP8266_USART_TX_PORT                         GPIOD
+#define      macESP8266_USART_TX_PIN                          GPIO_Pin_8
+#define      macESP8266_USART_TX_AF                           GPIO_AF_USART3
+#define      macESP8266_USART_TX_SOURCE                       GPIO_PinSource8
 
-#define      macESP8266_USART_RX_PORT                         GPIOC
-#define      macESP8266_USART_RX_PIN                          GPIO_Pin_7
-#define      macESP8266_USART_RX_AF                           GPIO_AF_USART6
-#define      macESP8266_USART_RX_SOURCE                       GPIO_PinSource7
+#define      macESP8266_USART_RX_PORT                         GPIOD
+#define      macESP8266_USART_RX_PIN                          GPIO_Pin_9
+#define      macESP8266_USART_RX_AF                           GPIO_AF_USART3
+#define      macESP8266_USART_RX_SOURCE                       GPIO_PinSource9
 
-#define      macESP8266_USART_IRQ                             USART6_IRQn
-#define      macESP8266_USART_INT_FUN                         USART6_IRQHandler
+#define      macESP8266_USART_IRQ                             USART3_IRQn
+#define      macESP8266_USART_INT_FUN                         USART3_IRQHandler
+
+
 
 /*********************************************** ESP8266 º¯Êýºê¶¨Òå *******************************************/
 #define     macESP8266_Usart( fmt, ... )           USART_printf ( macESP8266_USARTx, fmt, ##__VA_ARGS__ ) 
@@ -118,7 +122,7 @@ extern struct  STRUCT_USARTx_Fram                                  //´®¿ÚÊý¾ÝÖ¡µ
 void                     ESP8266_Init                        ( void );
 void                     ESP8266_Rst                         ( void );
 bool                     ESP8266_Cmd                         ( char * cmd, char * reply1, char * reply2, u32 waittime );
-void                     ESP8266_AT_Test                     ( void );
+bool                     ESP8266_AT_Test                     ( void );
 bool                     ESP8266_Net_Mode_Choose             ( ENUM_Net_ModeTypeDef enumMode );
 bool                     ESP8266_JoinAP                      ( char * pSSID, char * pPassWord );
 bool                     ESP8266_BuildAP                     ( char * pSSID, char * pPassWord, ENUM_AP_PsdMode_TypeDef enunPsdMode );
@@ -128,6 +132,7 @@ bool                     ESP8266_StartOrShutServer           ( FunctionalState e
 uint8_t                  ESP8266_Get_LinkStatus              ( void );
 uint8_t                  ESP8266_Get_IdLinkStatus            ( void );
 uint8_t                  ESP8266_Inquire_ApIp                ( char * pApIp, uint8_t ucArrayLength );
+uint8_t                  ESP8266_Inquire_StaIp               ( char * pApIp, uint8_t ucArrayLength ); // new
 bool                     ESP8266_UnvarnishSend               ( void );
 void                     ESP8266_ExitUnvarnishSend           ( void );
 bool                     ESP8266_SendString                  ( FunctionalState enumEnUnvarnishTx, char * pStr, u32 ulStrLength, ENUM_ID_NO_TypeDef ucId );
@@ -135,6 +140,7 @@ char *                   ESP8266_ReceiveString               ( FunctionalState e
 
 uint8_t                  ESP8266_CWLIF                       ( char * pStaIp );
 uint8_t                  ESP8266_CIPAP                       ( char * pApIp );
+uint8_t                  ESP8266_CIPSTA                      ( char * pStaIp );  // new
 
 
 #endif

@@ -122,7 +122,7 @@ extern struct  STRUCT_USARTx_Fram                                  //´®¿ÚÊý¾ÝÖ¡µ
 void                     ESP8266_Init                        ( void );
 void                     ESP8266_Rst                         ( void );
 bool                     ESP8266_Cmd                         ( char * cmd, char * reply1, char * reply2, u32 waittime );
-void                     ESP8266_AT_Test                     ( void );
+bool                     ESP8266_AT_Test                     ( void );
 bool                     ESP8266_Net_Mode_Choose             ( ENUM_Net_ModeTypeDef enumMode );
 bool                     ESP8266_JoinAP                      ( char * pSSID, char * pPassWord );
 bool                     ESP8266_BuildAP                     ( char * pSSID, char * pPassWord, ENUM_AP_PsdMode_TypeDef enunPsdMode );
@@ -132,6 +132,7 @@ bool                     ESP8266_StartOrShutServer           ( FunctionalState e
 uint8_t                  ESP8266_Get_LinkStatus              ( void );
 uint8_t                  ESP8266_Get_IdLinkStatus            ( void );
 uint8_t                  ESP8266_Inquire_ApIp                ( char * pApIp, uint8_t ucArrayLength );
+uint8_t                  ESP8266_Inquire_StaIp               ( char * pApIp, uint8_t ucArrayLength ); // new
 bool                     ESP8266_UnvarnishSend               ( void );
 void                     ESP8266_ExitUnvarnishSend           ( void );
 bool                     ESP8266_SendString                  ( FunctionalState enumEnUnvarnishTx, char * pStr, u32 ulStrLength, ENUM_ID_NO_TypeDef ucId );
@@ -139,6 +140,7 @@ char *                   ESP8266_ReceiveString               ( FunctionalState e
 
 uint8_t                  ESP8266_CWLIF                       ( char * pStaIp );
 uint8_t                  ESP8266_CIPAP                       ( char * pApIp );
+uint8_t                  ESP8266_CIPSTA                      ( char * pStaIp );  // new
 
 
 #endif

@@ -613,11 +613,6 @@
               <FileType>1</FileType>
               <FilePath>..\..\User\led\bsp_led.c</FilePath>
             </File>
-            <File>
-              <FileName>bsp_beep.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\User\beep\bsp_beep.c</FilePath>
-            </File>
           </Files>
         </Group>
       </Groups>

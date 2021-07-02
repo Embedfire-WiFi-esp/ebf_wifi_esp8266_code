@@ -19,8 +19,7 @@
 #include <stdio.h>  
 #include <string.h>  
 #include <stdbool.h>
-#include "./systick/bsp_SysTick.h"
-
+#include "./dwt_delay/core_delay.h"
 
 
 static void                   ESP8266_GPIO_Config                 ( void );
@@ -47,7 +46,7 @@ void ESP8266_Init ( void )
 	
 	macESP8266_RST_HIGH_LEVEL();
 
-	macESP8266_CH_DISABLE();
+	macESP8266_CH_ENABLE();
 	
 	
 }
@@ -69,9 +68,9 @@ static void ESP8266_GPIO_Config ( void )
 											   
 	GPIO_InitStructure.GPIO_Pin = macESP8266_CH_PD_PIN;	
 
-    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;  
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT; 
    
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
 
@@ -107,22 +106,22 @@ static void ESP8266_USART_Config ( void )
 	/* USART GPIO config */
 	/* Configure USART Tx as alternate function push-pull */
 	GPIO_InitStructure.GPIO_Pin =  macESP8266_USART_TX_PIN;
-	 GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(macESP8266_USART_TX_PORT, &GPIO_InitStructure);  
   
 	/* Configure USART Rx as input floating */
 	GPIO_InitStructure.GPIO_Pin = macESP8266_USART_RX_PIN;
 	GPIO_Init(macESP8266_USART_RX_PORT, &GPIO_InitStructure);
-    
-	  /* 连接 PXx 到 USARTx_Tx*/
-    GPIO_PinAFConfig(macESP8266_USART_TX_PORT,macESP8266_USART_TX_SOURCE, macESP8266_USART_TX_AF);
+  
+  /* 连接 PXx 到 USARTx_Tx*/
+  GPIO_PinAFConfig(macESP8266_USART_TX_PORT,macESP8266_USART_TX_SOURCE, macESP8266_USART_TX_AF);
 
-    /*  连接 PXx 到 USARTx__Rx*/
-    GPIO_PinAFConfig(macESP8266_USART_RX_PORT,macESP8266_USART_RX_SOURCE,macESP8266_USART_RX_AF);
-    
+  /*  连接 PXx 到 USARTx__Rx*/
+  GPIO_PinAFConfig(macESP8266_USART_RX_PORT,macESP8266_USART_RX_SOURCE,macESP8266_USART_RX_AF);
+  
 	/* USART1 mode config */
 	USART_InitStructure.USART_BaudRate = macESP8266_USART_BAUD_RATE;
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
@@ -185,6 +184,7 @@ void ESP8266_Rst ( void )
 	 macESP8266_RST_LOW_LEVEL();
 	 Delay_ms ( 500 ); 
 	 macESP8266_RST_HIGH_LEVEL();
+	 
 	#endif
 
 }
@@ -241,21 +241,28 @@ bool ESP8266_Cmd ( char * cmd, char * reply1, char * reply2, u32 waittime )
 //	
 //	Delay_ms ( 1000 ); 
 //	
-//	while ( ! ESP8266_Cmd ( "AT", "OK", NULL, 500 ) ) ESP8266_Rst ();  	
+//	while ( ! ESP8266_Cmd ( "AT", "OK", NULL, 200 ) ) ESP8266_Rst ();  	
 
 //}
-void ESP8266_AT_Test ( void )
+bool ESP8266_AT_Test ( void )
 {
 	char count=0;
 	
 	macESP8266_RST_HIGH_LEVEL();	
-	Delay_ms ( 1000 );
+  printf("\r\nAT测试.....\r\n");
+	Delay_ms ( 2000 );
 	while ( count < 10 )
 	{
-		if( ESP8266_Cmd ( "AT", "OK", NULL, 500 ) ) return;
+    printf("\r\nAT测试次数 %d......\r\n", count);
+		if( ESP8266_Cmd ( "AT", "OK", NULL, 500 ) )
+    {
+      printf("\r\nAT测试启动成功 %d......\r\n", count);
+      return 1;
+    }
 		ESP8266_Rst();
 		++ count;
 	}
+  return 0;
 }
 
 
@@ -541,6 +548,49 @@ uint8_t ESP8266_Inquire_ApIp ( char * pApIp, uint8_t ucArrayLength )
 
 
 /*
+ * 函数名：ESP8266_Inquire_ApIp
+ * 描述  ：获取 F-ESP8266 的 AP IP
+ * 输入  ：pApIp，存放 AP IP 的数组的首地址
+ *         ucArrayLength，存放 AP IP 的数组的长度
+ * 返回  : 0，获取失败
+ *         1，获取成功
+ * 调用  ：被外部调用
+ */
+uint8_t ESP8266_Inquire_StaIp ( char * pApIp, uint8_t ucArrayLength )
+{
+	char uc;
+	
+	char * pCh;
+	
+	
+  ESP8266_Cmd ( "AT+CIFSR", "OK", 0, 500 );
+	
+	pCh = strstr ( strEsp8266_Fram_Record .Data_RX_BUF, "STAIP,\"" );
+	
+	if ( pCh )
+		pCh += 7;
+	
+	else
+		return 0;
+	
+	for ( uc = 0; uc < ucArrayLength; uc ++ )
+	{
+		pApIp [ uc ] = * ( pCh + uc);
+		
+		if ( pApIp [ uc ] == '\"' )
+		{
+			pApIp [ uc ] = '\0';
+			break;
+		}
+		
+	}
+	
+	return 1;
+	
+}
+
+
+/*
  * 函数名：ESP8266_UnvarnishSend
  * 描述  ：配置WF-ESP8266模块进入透传发送
  * 输入  ：无
@@ -610,9 +660,9 @@ bool ESP8266_SendString ( FunctionalState enumEnUnvarnishTx, char * pStr, u32 ul
 		else
 			sprintf ( cStr, "AT+CIPSEND=%d", ulStrLength + 2 );
 		
-		ESP8266_Cmd ( cStr, "> ", 0, 1000 );
+		ESP8266_Cmd ( cStr, "> ", 0, 100 );
 
-		bRet = ESP8266_Cmd ( pStr, "SEND OK", 0, 1000 );
+		bRet = ESP8266_Cmd ( pStr, "SEND OK", 0, 500 );
   }
 	
 	return bRet;
@@ -705,6 +755,30 @@ uint8_t ESP8266_CIPAP ( char * pApIp )
 		
 	
 	sprintf ( cCmd, "AT+CIPAP=\"%s\"", pApIp );
+	
+  if ( ESP8266_Cmd ( cCmd, "OK", 0, 5000 ) )
+		return 1;
+ 
+	else 
+		return 0;
+	
+}
+
+
+/*
+ * 函数名：ESP8266_CIPSTA
+ * 描述  ：设置模块的 STA IP
+ * 输入  ：pStaIp，模块的 STA IP
+ * 返回  : 1，设置成功
+ *         0，设置失败
+ * 调用  ：被外部调用
+ */
+uint8_t ESP8266_CIPSTA ( char * pStaIp )
+{
+	char cCmd [ 30 ];
+		
+	
+	sprintf ( cCmd, "AT+CIPSTA=\"%s\"", pStaIp );
 	
   if ( ESP8266_Cmd ( cCmd, "OK", 0, 5000 ) )
 		return 1;

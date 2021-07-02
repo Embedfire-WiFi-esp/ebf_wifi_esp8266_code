@@ -19,7 +19,7 @@
 #include <stdio.h>  
 #include <string.h>  
 #include <stdbool.h>
-#include "./systick/bsp_SysTick.h"
+#include "./dwt_delay/core_delay.h"   
 
 
 
@@ -244,18 +244,25 @@ bool ESP8266_Cmd ( char * cmd, char * reply1, char * reply2, u32 waittime )
 //	while ( ! ESP8266_Cmd ( "AT", "OK", NULL, 500 ) ) ESP8266_Rst ();  	
 
 //}
-void ESP8266_AT_Test ( void )
+bool ESP8266_AT_Test ( void )
 {
 	char count=0;
 	
 	macESP8266_RST_HIGH_LEVEL();	
-	Delay_ms ( 1000 );
+  printf("\r\nAT测试.....\r\n");
+	Delay_ms ( 2000 );
 	while ( count < 10 )
 	{
-		if( ESP8266_Cmd ( "AT", "OK", NULL, 500 ) ) return;
+    printf("\r\nAT测试次数 %d......\r\n", count);
+		if( ESP8266_Cmd ( "AT", "OK", NULL, 500 ) )
+    {
+      printf("\r\nAT测试启动成功 %d......\r\n", count);
+      return 1;
+    }
 		ESP8266_Rst();
 		++ count;
 	}
+  return 0;
 }
 
 
@@ -610,9 +617,9 @@ bool ESP8266_SendString ( FunctionalState enumEnUnvarnishTx, char * pStr, u32 ul
 		else
 			sprintf ( cStr, "AT+CIPSEND=%d", ulStrLength + 2 );
 		
-		ESP8266_Cmd ( cStr, "> ", 0, 1000 );
+		ESP8266_Cmd ( cStr, "> ", 0, 100 );
 
-		bRet = ESP8266_Cmd ( pStr, "SEND OK", 0, 1000 );
+		bRet = ESP8266_Cmd ( pStr, "SEND OK", 0, 500 );
   }
 	
 	return bRet;

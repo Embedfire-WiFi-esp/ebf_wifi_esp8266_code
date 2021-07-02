@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include "bsp_dht11.h"
 #include "bsp_led.h"
-#include "bsp_beep.h"
+//#include "bsp_beep.h"
 
 
 
@@ -165,13 +165,11 @@ void ESP8266_CheckRecv_SendDataTest(void)
           switch ( cCh )
           {
             case '0':
-              LED1_OFF;   //2盏灯一起灭
-              LED2_OFF
+              LED3_OFF;
               ucLed3Status = 0;
               break;
             case '1':
-              LED1_ON;   //2盏灯一起亮
-              LED2_ON;
+              LED3_ON;
               ucLed3Status = 1;
               break;
             default :
@@ -195,11 +193,11 @@ void ESP8266_CheckRecv_SendDataTest(void)
       switch ( cCh )
       {
         case '0':
-          BEEP(OFF);
+//          BEEP(OFF);   //核心板没有板载蜂鸣器，注释掉不用
           ucBuzzerStatus = 0;
           break;
         case '1':
-          BEEP(ON);
+//          BEEP(ON);
           ucBuzzerStatus = 1;
           break;
         default:

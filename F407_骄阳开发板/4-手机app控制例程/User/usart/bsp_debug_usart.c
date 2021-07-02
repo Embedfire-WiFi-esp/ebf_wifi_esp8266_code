@@ -89,8 +89,8 @@ void Debug_USART_Config(void)
 	NVIC_Configuration();
 	
 	// 使能串口接收中断
-	USART_ITConfig(DEBUG_USART, USART_IT_RXNE, ENABLE);
-  USART_ITConfig ( DEBUG_USART, USART_IT_IDLE, ENABLE ); //使能串口总线空闲中断 	
+//	USART_ITConfig(DEBUG_USART, USART_IT_RXNE, ENABLE);
+//  USART_ITConfig ( DEBUG_USART, USART_IT_IDLE, ENABLE ); //使能串口总线空闲中断 	
 }
 /*****************  发送一个字节 **********************/
 void Usart_SendByte( USART_TypeDef * pUSARTx, uint8_t ch)

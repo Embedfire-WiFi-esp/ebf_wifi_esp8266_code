@@ -31,7 +31,10 @@
 #include "stm32f4xx_it.h"
 #include <string.h> 
 #include "./esp8266/bsp_esp8266.h"
-#include "./test/test.h"
+#include "./esp8266/bsp_esp8266_test.h"
+#include "./usart/bsp_debug_usart.h"
+#include "DHT11/bsp_dht11.h"
+
 /** @addtogroup STM32F429I_DISCOVERY_Examples
   * @{
   */
@@ -142,7 +145,8 @@ extern void TimingDelay_Decrement(void);
   */
 void SysTick_Handler(void)
 {
-  TimingDelay_Decrement();
+
+
 }
 
 /******************************************************************************/
@@ -151,6 +155,29 @@ void SysTick_Handler(void)
 /*  available peripheral interrupt handler's name please refer to the startup */
 /*  file (startup_stm32f429_439xx.s).                         */
 /******************************************************************************/
+
+
+// 串口中断服务函数
+void DEBUG_USART_IRQHandler(void)
+{
+//  uint8_t ucCh;
+//	if ( USART_GetITStatus ( DEBUG_USART, USART_IT_RXNE ) != RESET )
+//	{
+//		ucCh  = USART_ReceiveData( DEBUG_USART );
+//		
+//		if ( strUSART_Fram_Record .InfBit .FramLength < ( RX_BUF_MAX_LEN - 1 ) )                       //预留1个字节写结束符
+//			   strUSART_Fram_Record .Data_RX_BUF [ strUSART_Fram_Record .InfBit .FramLength ++ ]  = ucCh;
+
+//	}
+//	 	 
+//	if ( USART_GetITStatus( DEBUG_USART, USART_IT_IDLE ) == SET )                                         //数据帧接收完毕
+//	{
+//    strUSART_Fram_Record .InfBit .FramFinishFlag = 1;		
+//		
+//		ucCh = USART_ReceiveData( DEBUG_USART );                                                              //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)	
+//  }	
+}
+
 /**
   * @brief  This function handles macESP8266_USARTx Handler.
   * @param  None
@@ -159,8 +186,6 @@ void SysTick_Handler(void)
 void macESP8266_USART_INT_FUN ( void )
 {	
 	uint8_t ucCh;
-	
-	
 	if ( USART_GetITStatus ( macESP8266_USARTx, USART_IT_RXNE ) != RESET )
 	{
 		ucCh  = USART_ReceiveData( macESP8266_USARTx );
@@ -174,10 +199,9 @@ void macESP8266_USART_INT_FUN ( void )
 	{
     strEsp8266_Fram_Record .InfBit .FramFinishFlag = 1;
 		
-		ucCh = USART_ReceiveData( macESP8266_USARTx );                                                              //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)	
-		
+		ucCh = USART_ReceiveData( macESP8266_USARTx );                                                              //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)
+  
   }	
-
 }
 /**
   * @}

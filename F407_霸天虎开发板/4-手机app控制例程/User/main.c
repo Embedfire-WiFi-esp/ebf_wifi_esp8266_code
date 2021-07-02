@@ -20,9 +20,10 @@
 #include "./systick/bsp_SysTick.h"
 #include "./DHT11/bsp_dht11.h"
 #include "./esp8266/bsp_esp8266.h"
-#include "./test/test.h"
+#include "./esp8266/bsp_esp8266_test.h"
 #include "./led/bsp_led.h"   
 #include "./beep/bsp_beep.h"   
+#include "./dwt_delay/core_delay.h"
 
 
 /**
@@ -31,26 +32,32 @@
   * @retval 无
   */
 int main(void)
-{	
-  /*初始化USART，配置模式为 115200 8-N-1*/
-  Debug_USART_Config();
- 
-	/* 系统定时器初始化 */
-	SysTick_Init();
-	
-	ESP8266_Init ();          //初始化WiFi模块使用的接口和外设
-	DHT11_GPIO_Config();
-	LED_GPIO_Config();
-	BEEP_GPIO_Config();
-	
-	printf ( "\r\n野火 WF-ESP8266 WiFi模块测试例程\r\n" );    //打印测试例程提示信息
-
-	
-  ESP8266_StaTcpClient_UnvarnishTest ();
+{		
+  /* 初始化 */
+  Debug_USART_Config ();                                                              //初始化串口1
+  CPU_TS_TmrInit();
+	ESP8266_Init ();                                                               //初始化WiFi模块使用的接口和外设
+	DHT11_GPIO_Config ();
+  LED_GPIO_Config ();
+	BEEP_GPIO_Config ();
 	
 	
-  while ( 1 );
-
+	printf ( "\r\n野火 WF-ESP8266 WiFi模块测试例程\r\n" );                          //打印测试例程提示信息
+	
+  
+  #ifndef BUILTAP_TEST
+  ESP8266_StaTcpServer_ConfigTest();                                             //对ESP8266进行配置 STA模式
+  #else
+  ESP8266_ApTcpServer_ConfigTest();                                              //对ESP8266进行配置 AP模式
+  #endif
+  
+  while ( 1 )
+  {
+    
+    ESP8266_CheckRecv_SendDataTest(); // ESP8266 处理并发送数据
+    
+  }
+	
 
 }
 
