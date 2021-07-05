@@ -87,10 +87,10 @@ extern struct  STRUCT_USARTx_Fram                                  //´®¿ÚÊý¾ÝÖ¡µ
 #define      macESP8266_USART_APBxClock_FUN                   RCC_APB1PeriphClockCmd
 #define      macESP8266_USART_CLK                             RCC_APB1Periph_USART3
 #define      macESP8266_USART_GPIO_AHBxClock_FUN              RCC_AHB1PeriphClockCmd
-#define      macESP8266_USART_GPIO_CLK                        RCC_AHB1Periph_GPIOB     
-#define      macESP8266_USART_TX_PORT                         GPIOB   
+#define      macESP8266_USART_GPIO_CLK                        RCC_AHB1Periph_GPIOC     
+#define      macESP8266_USART_TX_PORT                         GPIOC   
 #define      macESP8266_USART_TX_PIN                          GPIO_Pin_10
-#define      macESP8266_USART_RX_PORT                         GPIOB
+#define      macESP8266_USART_RX_PORT                         GPIOC
 #define      macESP8266_USART_RX_PIN                          GPIO_Pin_11
 #define      macESP8266_USART_IRQ                             USART3_IRQn
 #define      macESP8266_USART_INT_FUN                         USART3_IRQHandler
