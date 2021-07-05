@@ -49,9 +49,9 @@ int main ( void )
 	  
   ESP8266_StaTcpClient_Unvarnish_ConfigTest();                          //对ESP8266进行配置
   
-  printf ( "\r\n在网络调试助手或者串口调试助手  发送以下命令控制板载RGB灯：\r\n" );    //打印测试例程提示信息
+  printf ( "\r\n在网络调试助手或者串口调试助手  发送以下命令控制板载LED灯：\r\n" );    //打印测试例程提示信息
   printf ( "\r\nLED1_ON\r\nLED2_ON\r\nLED3_ON\r\nLED4_ON\r\nLED_ALLOFF\r\n" );
-  printf ( "\r\n观察RGB灯的状态变化\r\n" );
+  printf ( "\r\n观察4个LED灯的状态变化\r\n" );
   
   while ( 1 )
   {
